@@ -1,0 +1,6 @@
+ctransformers
+streamlit
+transformers
+replicate
+langchain
+pytorch
