@@ -48,11 +48,6 @@ st.write("""
     </div>
 """, unsafe_allow_html=True)
 
-# def get_api_key():
-#     input_text = st.text_input(label="OpenAI API Key ",  placeholder="Ex: sk-2twmA8tfCb8un4...", key="openai_api_key_input", type='password')
-#     return input_text
-# openai_api_key = get_api_key()
-
 col1, col2 = st.columns([10, 10])
 with col1:
     sender = st.text_input(label="Sender's Name", key="sender_input")
@@ -69,7 +64,7 @@ if len(email_input.split(" ")) > 700:
     st.write("Please enter a shorter email. The maximum length is 700 words.")
     st.stop()
 
-if st.button("Convert", type='secondary', help="Click to see an example of the email you will be converting."):
+if st.button("Generate REPLY", type='secondary', help="Click to see an example of the email you will be creating."):
 
     if email_input and sender and recipient:
         if not openai_api_key:
