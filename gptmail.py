@@ -1,139 +1,85 @@
-import os
-import openai
 import streamlit as st
+from langchain.prompts import PromptTemplate
+from langchain.llms import OpenAI
+from decouple import config
 
-# DESIGN implement changes to the standard streamlit UI/UX
-st.set_page_config(page_title="rephraise", page_icon="img/rephraise_logo.png",)
-# Design move app further up and remove top padding
-st.markdown('''<style>.css-1egvi7u {margin-top: -4rem;}</style>''',
-    unsafe_allow_html=True)
-# Design change hyperlink href link color
-st.markdown('''<style>.css-znku1x a {color: #9d03fc;}</style>''',
-    unsafe_allow_html=True)  # darkmode
-st.markdown('''<style>.css-znku1x a {color: #9d03fc;}</style>''',
-    unsafe_allow_html=True)  # lightmode
-# Design change height of text input fields headers
-st.markdown('''<style>.css-qrbaxs {min-height: 0.0rem;}</style>''',
-    unsafe_allow_html=True)
-# Design change spinner color to primary color
-st.markdown('''<style>.stSpinner > div > div {border-top-color: #9d03fc;}</style>''',
-    unsafe_allow_html=True)
-# Design change min height of text input box
-st.markdown('''<style>.css-15tx938{min-height: 0.0rem;}</style>''',
-    unsafe_allow_html=True)
-# Design hide top header line
-hide_decoration_bar_style = '''<style>header {visibility: hidden;}</style>'''
-st.markdown(hide_decoration_bar_style, unsafe_allow_html=True)
-# Design hide "made with streamlit" footer menu area
-hide_streamlit_footer = """<style>#MainMenu {visibility: hidden;}
-                        footer {visibility: hidden;}</style>"""
-st.markdown(hide_streamlit_footer, unsafe_allow_html=True)
+openai_api_key = config('OPENAI_API_KEY')
 
+template = """
+    Below is an email received from a Rockwoord Glass client or prospect.
+    At Rockwoord Glass, we are number 1 bespoke design and manufacturing glass and ceramic bottles.
+    We service the biggest names as well as the tailored demands. 
 
-# Connect to OpenAI GPT-3, fetch API key from Streamlit secrets
-openai.api_key = ("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")
+    You are Rockwoord Glass company customer service representative,
+    your goal as a is to:
+    - Reply to this email in less than 150 words
+    - Properly format the email response
+    - Use an appropriate salesly, polite and concise tone
+    - Make simple yet polite and accurate sentences 
 
+    Please start the email with a warm introduction. Add the introduction if you need to.
+    
+    Below is the email received with metadata :
+    SENDER: {sender}
+    RECIPIENT: {recipient}
+    EMAIL: {email}
+    
 
-def gen_mail_contents(email_contents):
+"""
 
-    # iterate through all seperate topics
-    for topic in range(len(email_contents)):
-        input_text = email_contents[topic]
-        rephrased_content = openai.Completion.create(
-            engine="text-davinci-002",
-            prompt=f"Rewrite the text to be elaborate and polite.\nAbbreviations need to be replaced.\nText: {input_text}\nRewritten text:",
-            # prompt=f"Rewrite the text to sound professional, elaborate and polite.\nText: {input_text}\nRewritten text:",
-            temperature=0.8,
-            max_tokens=len(input_text)*3,
-            top_p=0.8,
-            best_of=2,
-            frequency_penalty=0.0,
-            presence_penalty=0.0)
+prompt = PromptTemplate(
+    input_variables=["sender", "recipient","email"],
+    template=template,
+)
 
-        # replace existing topic text with updated
-        email_contents[topic] = rephrased_content.get("choices")[0]['text']
-    return email_contents
+def load_LLM(openai_api_key):
+    """Logic for loading the chain you want to use should go here."""
+    # Make sure your openai_api_key is set as an environment variable
+    llm = OpenAI(temperature=.7, openai_api_key=openai_api_key)
+    return llm
 
+st.set_page_config(page_title=" RockwoodGPT 💬 ", page_icon=":robot:")
 
-def gen_mail_format(sender, recipient, style, email_contents):
-    # update the contents data with more formal statements
-    email_contents = gen_mail_contents(email_contents)
-    # st.write(email_contents)  # view augmented contents
+# Use HTML to center the title
+st.write("""
+    <div style="display: flex; align-items: center; justify-content: center;">
+        <img src="https://www.rockwoodglass.com/wp-content/uploads/2020/02/logo.png" alt="RWlogo" style="width: 50px; height: 50px;">
+        <h2 style="margin-left: 10px;">💬 RockWood Email Generator</h2>
+    </div>
+""", unsafe_allow_html=True)
 
-    contents_str, contents_length = "", 0
-    for topic in range(len(email_contents)):  # aggregate all contents into one
-        contents_str = contents_str + f"\nContent{topic+1}: " + email_contents[topic]
-        contents_length += len(email_contents[topic])  # calc total chars
+# def get_api_key():
+#     input_text = st.text_input(label="OpenAI API Key ",  placeholder="Ex: sk-2twmA8tfCb8un4...", key="openai_api_key_input", type='password')
+#     return input_text
+# openai_api_key = get_api_key()
 
-    email_final_text = openai.Completion.create(
-        engine="text-davinci-002",
-        prompt=f"Write a professional email sounds {style} and includes Content1 and Content2 in that order.\n\nSender: {sender}\nRecipient: {recipient} {contents_str}\n\nEmail Text:",
-        # prompt=f"Write a professional sounding email text that includes all of the following contents separately.\nThe text needs to be written to adhere to the specified writing styles and abbreviations need to be replaced.\n\nSender: {sender}\nRecipient: {recipient} {contents_str}\nWriting Styles: motivated, formal\n\nEmail Text:",
-        temperature=0.8,
-        max_tokens=contents_length*2,
-        top_p=0.8,
-        best_of=2,
-        frequency_penalty=0.0,
-        presence_penalty=0.0)
+col1, col2 = st.columns([10, 10])
+with col1:
+    sender = st.text_input(label="Sender's Name", key="sender_input")
+with col2:
+    recipient = st.text_input(label="Recipient's Name", key="recipient_input")
 
-    return email_final_text.get("choices")[0]['text']
+def get_text():
+    input_text = st.text_area(label="Paste the email here",  placeholder="Your Email...", key="email_input")
+    return input_text
 
+email_input = get_text()
 
-def main_gpt3emailgen():
+if len(email_input.split(" ")) > 700:
+    st.write("Please enter a shorter email. The maximum length is 700 words.")
+    st.stop()
 
-    st.image('GPT_email_generator-main\img\Email Generator.jpg')  # TITLE and Creator information
-    st.markdown('Generate professional sounding emails based on your direct comments - powered by Artificial Intelligence (OpenAI GPT-3) Implemented by '
-        '[Pratyay Anil](https://www.linkedin.com/in/pratyay-anil-412127185) - '
-        'view project source code on '
-        '[GitHub](https://github.com/Pratyayanil/Email-Generator-using-Python-Open-AI-and-Streamlit)')
-    st.write('\n')  # add spacing
+if st.button("Convert", type='secondary', help="Click to see an example of the email you will be converting."):
 
-    st.subheader('\nWhat is your email all about?\n')
-    with st.expander("SECTION - Email Input", expanded=True):
+    if email_input and sender and recipient:
+        if not openai_api_key:
+            st.warning('Please insert OpenAI API Key. Instructions [here](https://help.openai.com/en/articles/4936850-where-do-i-find-my-secret-api-key)', icon="⚠️")
+            st.stop()
 
-        input_c1 = st.text_input('Enter email contents down below! (currently 2x seperate topics supported)', 'topic 1')
-        input_c2 = st.text_input('', 'topic 2 (optional)')
+        llm = load_LLM(openai_api_key=openai_api_key)
 
-        email_text = ""  # initialize columns variables
-        col1, col2, col3, space, col4 = st.columns([5, 5, 5, 0.5, 5])
-        with col1:
-            input_sender = st.text_input('Sender Name', '[rephraise]')
-        with col2:
-            input_recipient = st.text_input('Recipient Name', '[recipient]')
-        with col3:
-            input_style = st.selectbox('Writing Style',
-                                       ('formal', 'motivated', 'concerned', 'disappointed'),
-                                       index=0)
-        with col4:
-            st.write("\n")  # add spacing
-            st.write("\n")  # add spacing
-            if st.button('Generate Email'):
-                with st.spinner():
+        prompt_with_email = prompt.format(sender=sender, recipient=recipient, email=email_input)
 
-                    input_contents = []  # let the user input all the data
-                    if (input_c1 != "") and (input_c1 != 'topic 1'):
-                        input_contents.append(str(input_c1))
-                    if (input_c2 != "") and (input_c2 != 'topic 2 (optional)'):
-                        input_contents.append(str(input_c2))
+        formatted_email = llm(prompt_with_email)
 
-                    if (len(input_contents) == 0):  # remind user to provide data
-                        st.write('Please fill in some contents for your message!')
-                    if (len(input_sender) == 0) or (len(input_recipient) == 0):
-                        st.write('Sender and Recipient names can not be empty!')
-
-                    if (len(input_contents) >= 1):  # initiate gpt3 mail gen process
-                        if (len(input_sender) != 0) and (len(input_recipient) != 0):
-                            email_text = gen_mail_format(input_sender,
-                                                         input_recipient,
-                                                         input_style,
-                                                         input_contents)
-    if email_text != "":
-        st.write('\n')  # add spacing
-        st.subheader('\nYou sound incredibly professional!\n')
-        with st.expander("SECTION - Email Output", expanded=True):
-            st.markdown(email_text)  #output the results
-
-
-if __name__ == '__main__':
-    # call main function
-    main_gpt3emailgen()
+        st.write(formatted_email)
