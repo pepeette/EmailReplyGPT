@@ -7,9 +7,9 @@ from dotenv import load_dotenv
 load_dotenv() 
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
-if not openai_api_key:
+if not openai.api_key:
     try:
-        openai_api_key = st.secrets['path']
+        openai.api_key = st.secrets['path']
     except st.secrets.SecretsFileNotFoundError:
         st.warning('Streamlit Secrets file not found. Please make sure you have set your secrets.')
         st.stop()
