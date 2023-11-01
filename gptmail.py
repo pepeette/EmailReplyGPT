@@ -5,7 +5,13 @@ import os
 from dotenv import load_dotenv
 load_dotenv() 
 
-openai_api_key = os.getenv('OPENAI_API_KEY')
+openai.api_key = os.getenv('OPENAI_API_KEY')
+if not openai_api_key:
+    try:
+        openai_api_key = st.secrets['path']
+    except st.secrets.SecretsFileNotFoundError:
+        st.warning('Streamlit Secrets file not found. Please make sure you have set your secrets.')
+        st.stop()
 
 template = """
     Below is an email received from a Rockwoord Glass client or prospect.
@@ -37,7 +43,7 @@ prompt = PromptTemplate(
 def load_LLM(openai_api_key):
     """Logic for loading the chain you want to use should go here."""
     # Make sure your openai_api_key is set as an environment variable
-    llm = OpenAI(temperature=.7, openai_api_key=openai_api_key)
+    llm = OpenAI(temperature=.7, openai_api_key=openai.api_key)
     return llm
 
 st.set_page_config(page_title=" RockwoodGPT 💬 ", page_icon=":robot:")
