@@ -2,8 +2,10 @@ import streamlit as st
 from langchain.prompts import PromptTemplate
 from langchain.llms import OpenAI
 import os
+from dotenv import load_dotenv
+load_dotenv() 
 
-openai_api_key = os.environ.get('OPENAI_API_KEY')
+openai_api_key = os.getenv('OPENAI_API_KEY')
 
 template = """
     Below is an email received from a Rockwoord Glass client or prospect.
