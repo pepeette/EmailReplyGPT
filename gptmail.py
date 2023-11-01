@@ -80,7 +80,7 @@ if st.button("Generate REPLY", type='secondary', help="Click to see an example o
             st.warning('Please insert OpenAI API Key. Instructions [here](https://help.openai.com/en/articles/4936850-where-do-i-find-my-secret-api-key)', icon="⚠️")
             st.stop()
 
-        llm = load_LLM(openai_api_key=openai_api_key)
+        llm = load_LLM(openai_api_key=openai.api_key)
 
         prompt_with_email = prompt.format(sender=sender, recipient=recipient, email=email_input)
 
