@@ -76,7 +76,7 @@ if len(email_input.split(" ")) > 700:
 if st.button("Generate REPLY", type='secondary', help="Click to see an example of the email you will be creating."):
 
     if email_input and sender and recipient:
-        if not openai_api_key:
+        if not openai.api_key:
             st.warning('Please insert OpenAI API Key. Instructions [here](https://help.openai.com/en/articles/4936850-where-do-i-find-my-secret-api-key)', icon="⚠️")
             st.stop()
 
