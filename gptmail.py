@@ -16,17 +16,16 @@ if not openai.api_key:
 
 template = """
     Below is an email received from a Rockwoord Glass client or prospect.
-    At Rockwoord Glass, we are number 1 bespoke design and manufacturing glass and ceramic bottles.
-    We service the biggest names as well as the tailored demands. 
-
     You are Rockwoord Glass company customer service representative,
-    your goal as a is to:
+    your goal is to:
     - Reply to this email in less than 150 words
     - Properly format the email response
     - Use an appropriate salesly, polite and concise tone
     - Make simple yet polite and accurate sentences 
 
     Please start the email with a warm introduction. Add the introduction if you need to.
+    At Rockwoord Glass, we are number 1 bespoke design and manufacturing glass and ceramic bottles.
+    We service the biggest names as well as the tailored demands. 
     
     Below is the email received with metadata :
     SENDER: {sender}
@@ -52,7 +51,7 @@ st.set_page_config(page_title=" RockwoodGPT 💬 ", page_icon=":robot:")
 # Use HTML to center the title
 st.write("""
     <div style="display: flex; align-items: center; justify-content: center;">
-        <img src="logo.png" alt="RWlogo" style="width: 50px; height: 50px;">
+        <img src="https://www.rockwoodglass.com/wp-content/uploads/2020/02/logo.png" alt="RWlogo" style="width: 50px; height: 50px;">
         <h2 style="margin-left: 10px;">💬 RockWood Email Generator</h2>
     </div>
 """, unsafe_allow_html=True)
