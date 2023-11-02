@@ -22,6 +22,7 @@ template = """
     - Properly format the email response
     - Use an appropriate salesly, polite and concise tone
     - Make simple yet polite and accurate sentences 
+    - Focus your email reply on the next action pending or done
 
     Please start the email with a warm introduction. Add the introduction if you need to.
     At Rockwoord Glass, we are number 1 bespoke design and manufacturing glass and ceramic bottles.
