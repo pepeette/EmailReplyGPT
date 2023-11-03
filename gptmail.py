@@ -84,7 +84,7 @@ st.write("""
     </div>
 """, unsafe_allow_html=True)
 
-col1, col2 = st.columns([10, 10])
+col1, col2 = st.columns([12, 12])
 with col1:
     sender = st.text_input(label="Name of the client", key="sender_input")
 with col2:
@@ -96,7 +96,7 @@ def get_text():
 
 email_input = get_text()
 
-col3, col4 = st.columns([10, 10])
+col3, col4 = st.columns([12, 12])
 with col3:
     tone = st.text_input(label="Response tone", key="tone_input")
 with col4:
