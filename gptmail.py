@@ -94,11 +94,11 @@ with col2:
         typology_input = st.text_input("Type or ->", key="typology_input")    
     with col2_2:
         typology_options = ["Enquiry", "Professional", "Unprofessional", "Idiot", "Arsey"] 
-        typology = st.selectbox("Select from options", typology_options)
-
-def get_text():
-    input_text = st.text_area(label="Paste the email here",  placeholder="Your Email...", key="email_input")
-    return input_text
+        typology = st.selectbox("Select from options", typology_options, index=len(typology_options))  # Set the index to a value outside the options list
+if selected_typology == typology_options[-1]:
+    typology = typology_input 
+else:
+    typology = selected_typology
 
 email_input = get_text()
 
