@@ -88,17 +88,13 @@ col1, col2 = st.columns([12, 12])
 with col1:
     sender = st.text_input(label="Name of the client", key="sender_input")
 with col2:
-    st.text("Type of client (or select from options)")
-    col2_1, col2_2 = st.columns([1, 3])
-    with col2_1:
-        typology_input = st.text_input("Type or ->", key="typology_input")    
-    with col2_2:
-        typology_options = ["Enquiry", "Professional", "Unprofessional", "Idiot", "Arsey"] 
-        typology = st.selectbox("Select from options", typology_options, index=len(typology_options))  # Set the index to a value outside the options list
-if selected_typology == typology_options[-1]:
-    typology = typology_input 
-else:
-    typology = selected_typology
+    typology_input = st.text_input(label="Type of client (or select from options)", key="typology_input")
+    typology_options = ["Enquiry", "Professional", "Unprofessional", "Idiot", "Arsey"] 
+    # Check if the user input exists in the list of options
+    if typology_input in typology_options:
+        typology = typology_input  
+    else:
+        typology = st.selectbox("Select from options", typology_options)
 
 email_input = get_text()
 
