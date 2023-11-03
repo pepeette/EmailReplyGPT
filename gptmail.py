@@ -48,7 +48,7 @@ template = """
     Do write the reply bearing in mind these strict requirements : 
     - Reply in less than 150 words
     - Properly format the email response
-    - Use the appropriate {tone} for the client {typology}
+    - Use the appropriate tone : {tone} for the client typology : {typology}
     - Make very simple sentences. Use bullet points when appropriate.
     - Focus the reply on the next action.
 
