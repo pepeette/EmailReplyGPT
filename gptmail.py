@@ -120,10 +120,14 @@ with col2:
 
 
 def get_text():
-    input_text = st.text_area(label="Paste the email received here",  placeholder="Your Email...", key="email_input")
+    input_text = st.text_area(label="Paste the email received here *",  placeholder="Your Email...", key="email_input")
     return input_text
     
 email_input = get_text()
+
+if len(email_input.split(" ")) > 700:
+    st.write("Please enter a shorter email. The maximum length is 700 words.")
+    st.stop()
 
 col3, col4 = st.columns([12, 12])
 with col3:
@@ -132,9 +136,8 @@ with col3:
 with col4:
     recipient = st.text_input(label="Your name *", key="recipient_input")
 
-if len(email_input.split(" ")) > 700:
-    st.write("Please enter a shorter email. The maximum length is 700 words.")
-    st.stop()
+
+st.write(" ")
 
 if st.button("Generate REPLY 📩", type='secondary', help="Click to see an example of the email you will be creating."):
 
