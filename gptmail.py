@@ -42,29 +42,28 @@ if not openai.api_key:
         st.stop()
 
 template = """
-    Below is an email received from a Rockwoord Glass client or prospect.
-    You are Rockwoord Glass company customer service representative,
-    your goal is to:
-    - Reply to this email in less than 150 words
+    Below is an email received from a Rockwoord Glass client or prospect called {sender}.
+    You, {recipient}, are Rockwoord-Glass company customer service representative,
+    your goal is to reply to this email received in an email formatted manner.
+    Do write the reply bearing in mind these strict requirements : 
+    - Reply in less than 150 words
     - Properly format the email response
-    - Use an appropriate salesly, polite and concise tone
-    - Make simple yet polite and accurate sentences 
-    - Focus your email reply on the next action pending or done
+    - Use the appropriate {tone} for the client {typology}
+    - Make very simple sentences. Use bullet points when appropriate.
+    - Focus the reply on the next action.
 
-    Please start the email with a warm introduction. Add the introduction if you need to.
+    Please start the email with a short and warm introduction. Add the introduction if you need to.
     At Rockwoord Glass, we are number 1 bespoke design and manufacturing glass and ceramic bottles.
     We service the biggest names as well as the tailored demands. 
     
-    Below is the email received with metadata :
-    SENDER: {sender}
-    RECIPIENT: {recipient}
-    EMAIL: {email}
+    Here is the email received to reply to :
+    EMAIL RECEIVED: {email}
     
 
 """
 
 prompt = PromptTemplate(
-    input_variables=["sender", "recipient","email"],
+    input_variables=["sender", "typology","tone","recipient","email"],
     template=template,
 )
 
@@ -84,11 +83,11 @@ st.write("""
     </div>
 """, unsafe_allow_html=True)
 
-col1, col2 = st.columns([12, 12])
+col1, col2 = st.columns([6, 12])
 with col1:
-    sender = st.text_input(label="Name of the client", key="sender_input")
+    sender = st.text_input(label="Name of the client *", key="sender_input")
 with col2:
-    #st.write("Type of client (or select from options)")
+    #st.write("Indicate the sender's typology")
     row1, row2 = st.columns(2)
 
     with row1:
@@ -104,17 +103,6 @@ with col2:
             # If text input is empty, use the dropdown or set typology to None
             typology = st.selectbox("(or select from options)", typology_options, index=None, key="typology_select", placeholder="Select ..")
 
-# with col2:
-#     typology_input = st.text_input(label="Type of client (or select from options)", key="typology_input")
-#     typology_options = ["Enquiry", "Professional", "Unprofessional", "Idiot", "Arsey"]
-    
-#     # Check if the text input is not empty
-#     if typology_input:
-#         typology = typology_input
-#     else:
-#         # If text input is empty, use the dropdown or set typology to None
-#         typology = st.selectbox("or", typology_options, index=None, key="typology_select", placeholder="Select client typology")
-
 
 def get_text():
     input_text = st.text_area(label="Paste the email received here",  placeholder="Your Email...", key="email_input")
@@ -124,11 +112,10 @@ email_input = get_text()
 
 col3, col4 = st.columns([12, 12])
 with col3:
-    tone_options = []
+    tone_options = ["Informative","Salesly","Polite","Monopolistic","Expert"]
     tone = st.selectbox("", tone_options, index=None, key="tone_select", placeholder="Select tone to reply")
-    tone = st.text_input(label="Response tone", key="tone_input")
 with col4:
-    recipient = st.text_input(label="Your name", key="recipient_input")
+    recipient = st.text_input(label="Your name *", key="recipient_input")
 
 if len(email_input.split(" ")) > 700:
     st.write("Please enter a shorter email. The maximum length is 700 words.")
