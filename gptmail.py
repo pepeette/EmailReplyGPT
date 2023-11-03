@@ -88,7 +88,7 @@ col1, col2 = st.columns([12, 12])
 with col1:
     sender = st.text_input(label="Name of the client", key="sender_input")
 with col2:
-    st.text(label="Type of client (or select from options)")
+    st.text("Type of client (or select from options)")
     col2_1, col2_2 = st.columns([1, 3])
     with col2_1:
         typology_input = st.text_input("Type or ->", key="typology_input")    
