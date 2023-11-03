@@ -88,7 +88,13 @@ col1, col2 = st.columns([12, 12])
 with col1:
     sender = st.text_input(label="Name of the client", key="sender_input")
 with col2:
-    typology = st.text_input(label="Type of client", key="typology_input")
+    typology_input = st.text_input(label="Type of client (or select from options)", key="typology_input")
+    typology_options = ["Enquiry", "Professional", "Unprofessional", "Idiot", "Arsey"] 
+    # Check if the user input exists in the list of options
+    if typology_input in typology_options:
+        typology = typology_input  
+    else:
+        typology = st.selectbox("Select from options", typology_options)
 
 def get_text():
     input_text = st.text_area(label="Paste the email here",  placeholder="Your Email...", key="email_input")
