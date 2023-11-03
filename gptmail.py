@@ -96,6 +96,11 @@ with col2:
     else:
         typology = st.selectbox("Select from options", typology_options)
 
+
+def get_text():
+    input_text = st.text_area(label="Paste the email received here",  placeholder="Your Email...", key="email_input")
+    return input_text
+    
 email_input = get_text()
 
 col3, col4 = st.columns([12, 12])
