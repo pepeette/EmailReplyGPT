@@ -76,12 +76,24 @@ def load_LLM(openai_api_key):
 st.set_page_config(page_title=" RockwoodGPT 📩 ", page_icon=":robot:")
 
 # Use HTML to center the title
-st.write("""
-    <div style="display: flex; align-items: center; justify-content: center;">
-        <img src="https://www.rockwoodglass.com/wp-content/uploads/2020/02/logo.png" alt="RWlogo" style="width: 50px; height: 50px;">
-        <h2 style="margin-left: 10px;">📩 RockWood Email Generator</h2>
-    </div>
-""", unsafe_allow_html=True)
+from PIL import Image
+
+image = Image.open('logo.png')
+colA, colB = st.columns([1, 3])
+with colA:
+    st.image(image)
+with colB:
+    st.header("  RockWood Email Generator ")
+
+# st.write("""
+#     <div style="display: flex; align-items: center; justify-content: center;">
+#         <img src="https://www.rockwoodglass.com/wp-content/uploads/2020/02/logo.png" alt="RWlogo" style="width: 50px; height: 50px;">
+#         <h2 style="margin-left: 10px;">📩 RockWood Email Generator</h2>
+#     </div>
+# """, unsafe_allow_html=True)
+st.write(" ")
+st.write(" ")
+st.write(" ")
 
 col1, col2 = st.columns([6, 12])
 with col1:
@@ -121,7 +133,7 @@ if len(email_input.split(" ")) > 700:
     st.write("Please enter a shorter email. The maximum length is 700 words.")
     st.stop()
 
-if st.button("Generate REPLY", type='secondary', help="Click to see an example of the email you will be creating."):
+if st.button("Generate REPLY 📩", type='secondary', help="Click to see an example of the email you will be creating."):
 
     if email_input and sender and recipient:
         if not openai.api_key:
