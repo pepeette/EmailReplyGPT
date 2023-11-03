@@ -93,7 +93,7 @@ with col2:
     with col2_1:
         typology_input = st.text_input(label="Type or ->", key="typology_input")    
     with col2_2:
-        typology_options = ["Option 1", "Option 2", "Option 3"]  # Add your options here
+        typology_options = ["Enquiry", "Professional", "Unprofessional", "Idiot", "Arsey"] 
         typology = st.selectbox(label="Select from options", typology_options)
 
 def get_text():
