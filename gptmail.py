@@ -91,7 +91,7 @@ with col2:
     st.text("Type of client (or select from options)")
     col2_1, col2_2 = st.columns([1, 3])
     with col2_1:
-        typology_input = st.text_input("Enter custom type", key="typology_input")    
+        typology_input = st.text_input("Type or ->", key="typology_input")    
     with col2_2:
         typology_options = ["Option 1", "Option 2", "Option 3"]  # Add your options here
         typology = st.selectbox("Select from options", typology_options)
