@@ -88,13 +88,32 @@ col1, col2 = st.columns([12, 12])
 with col1:
     sender = st.text_input(label="Name of the client", key="sender_input")
 with col2:
-    typology_input = st.text_input(label="Type of client (or select from options)", key="typology_input")
-    typology_options = ["Enquiry", "Professional", "Unprofessional", "Idiot", "Arsey"] 
-    # Check if the user input exists in the list of options
-    if typology_input in typology_options:
-        typology = typology_input  
-    else:
-        typology = st.selectbox("Select from options", typology_options)
+    #st.write("Type of client (or select from options)")
+    row1, row2 = st.columns(2)
+
+    with row1:
+        typology_input = st.text_input("Type of client", placeholder="Type", key="typology_input")
+        
+    with row2:
+        typology_options = ["Enquiry", "Professional", "Unprofessional", "Idiot", "Arsey"]
+
+        # Check if the text input is not empty
+        if typology_input:
+            typology = typology_input
+        else:
+            # If text input is empty, use the dropdown or set typology to None
+            typology = st.selectbox("(or select from options)", typology_options, index=None, key="typology_select", placeholder="Select ..")
+
+# with col2:
+#     typology_input = st.text_input(label="Type of client (or select from options)", key="typology_input")
+#     typology_options = ["Enquiry", "Professional", "Unprofessional", "Idiot", "Arsey"]
+    
+#     # Check if the text input is not empty
+#     if typology_input:
+#         typology = typology_input
+#     else:
+#         # If text input is empty, use the dropdown or set typology to None
+#         typology = st.selectbox("or", typology_options, index=None, key="typology_select", placeholder="Select client typology")
 
 
 def get_text():
@@ -105,6 +124,8 @@ email_input = get_text()
 
 col3, col4 = st.columns([12, 12])
 with col3:
+    tone_options = []
+    tone = st.selectbox("", tone_options, index=None, key="tone_select", placeholder="Select tone to reply")
     tone = st.text_input(label="Response tone", key="tone_input")
 with col4:
     recipient = st.text_input(label="Your name", key="recipient_input")
@@ -127,4 +148,3 @@ if st.button("Generate REPLY", type='secondary', help="Click to see an example o
         formatted_email = llm(prompt_with_email)
 
         st.write(formatted_email)
-
