@@ -137,7 +137,6 @@ with col4:
 
 
 st.write(" ")
-
 if st.button("Generate REPLY 📩", type='secondary', help="Click to see an example of the email you will be creating."):
 
     if email_input and sender and recipient:
@@ -149,6 +148,29 @@ if st.button("Generate REPLY 📩", type='secondary', help="Click to see an exam
 
         prompt_with_email = prompt.format(sender=sender, recipient=recipient, email=email_input)
 
+        if typology:
+            prompt_with_email += f"typology: {typology}\n"
+
+        if tone:
+            prompt_with_email += f"tone: {tone}\n"
+
         formatted_email = llm(prompt_with_email)
 
         st.write(formatted_email)
+    else:
+        st.warning('Please fill in all required fields (Name of the client, Your name, and paste the email).', icon="⚠️")
+
+# if st.button("Generate REPLY 📩", type='secondary', help="Click to see an example of the email you will be creating."):
+
+#     if email_input and sender and recipient:
+#         if not openai.api_key:
+#             st.warning('Please insert OpenAI API Key. Instructions [here](https://help.openai.com/en/articles/4936850-where-do-i-find-my-secret-api-key)', icon="⚠️")
+#             st.stop()
+
+#         llm = load_LLM(openai_api_key=openai.api_key)
+
+#         prompt_with_email = prompt.format(sender=sender, recipient=recipient, email=email_input)
+
+#         formatted_email = llm(prompt_with_email)
+
+#         st.write(formatted_email)
