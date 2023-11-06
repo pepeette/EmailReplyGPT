@@ -94,8 +94,7 @@ with colB:
 st.write(" ")
 st.write(" ")
 st.write(" ")
-st.write(" ")
-st.write(" ")
+
 
 
 col1, col2 = st.columns([6, 12])
