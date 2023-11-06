@@ -146,17 +146,13 @@ if st.button("Generate REPLY 📩", type='secondary', help="Click to see an exam
 
         llm = load_LLM(openai_api_key=openai.api_key)
 
-        prompt_with_email = prompt.format(sender=sender, recipient=recipient, email=email_input)
-
-        if typology:
-            prompt_with_email += f"typology: {typology}\n"
-        else:
-            prompt_with_email += "typology: None\n"
-
-        if tone:
-            prompt_with_email += f"tone: {tone}\n"
-        else:
-            prompt_with_email += "tone: None\n"
+        prompt_with_email = prompt.format(
+            sender=sender,
+            recipient=recipient,
+            email=email_input,
+            typology=typology if 'typology' in locals() else 'None',
+            tone=tone if 'tone' in locals() else 'None',
+        )
 
         formatted_email = llm(prompt_with_email)
 
