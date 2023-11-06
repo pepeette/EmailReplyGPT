@@ -150,9 +150,13 @@ if st.button("Generate REPLY 📩", type='secondary', help="Click to see an exam
 
         if typology:
             prompt_with_email += f"typology: {typology}\n"
+        else:
+            prompt_with_email += "typology: None\n"
 
         if tone:
             prompt_with_email += f"tone: {tone}\n"
+        else:
+            prompt_with_email += "tone: None\n"
 
         formatted_email = llm(prompt_with_email)
 
