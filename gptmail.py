@@ -17,9 +17,9 @@
 
 #     Please start the email with a warm introduction. Add the introduction if you need to.
     
-#     Below is the email, tone, and dialect:
+#     Below is the email, tone, and typology of client:
 #     TONE: {tone}
-#     DIALECT: {dialect}
+#     TYPOLOGY: {typology}
 #     EMAIL: {email}
     
 # """
