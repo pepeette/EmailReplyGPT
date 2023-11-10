@@ -57,7 +57,6 @@ template = """
     
     Here is the email received to reply to :
     EMAIL RECEIVED: {email}
-    
 
 """
 
